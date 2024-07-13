@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:imago/core/service_locator/service_locator.dart';
 import 'package:imago/core/theme/app_theme.dart';
+import 'package:imago/env/env.dart';
 import 'package:imago/features/home_page/presentation/cubit/home_page_cubit.dart';
 import 'package:imago/features/home_page/presentation/pages/homepage.dart';
 
 Future<void> main() async {
+  AppEnvironment.setupEnv(Environment.dev);
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await init();

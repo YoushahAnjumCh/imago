@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:imago/core/constant/app_constant.dart';
 import 'package:imago/core/constant/color_constant.dart';
+import 'package:imago/env/env.dart';
 import 'package:imago/features/home_page/presentation/cubit/home_page_cubit.dart';
 import 'package:imago/features/home_page/presentation/widgets/custom_container.dart';
 import 'package:imago/features/home_page/presentation/widgets/home_screen_button.dart';
@@ -16,7 +17,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(AppConstant.appName),
+        title: Text(AppEnvironment.title),
       ),
       body: Column(
         children: [
