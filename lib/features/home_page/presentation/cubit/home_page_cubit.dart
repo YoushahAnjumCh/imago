@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/services.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:imago/core/failure/failure.dart';
@@ -37,6 +37,7 @@ class HomeScreenCubit extends Cubit<HomePageState> {
     Directory tempDir = await Directory.systemTemp.createTemp();
 
     final imagePath = '${tempDir.path}/temp_image.png';
+
     imageFile = File(imagePath);
     await imageFile.writeAsBytes(bytes);
     return imageFile;
@@ -53,7 +54,6 @@ class HomeScreenCubit extends Cubit<HomePageState> {
     } catch (e) {
       emit(const HomePageFailure(errorMessage: "Path Error"));
     }
-
     emit(HomePageInitial());
   }
 

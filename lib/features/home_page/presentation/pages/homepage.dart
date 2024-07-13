@@ -127,6 +127,7 @@ class HomePage extends StatelessWidget {
                           : AppConstant.fetch),
                   isImageAvailable
                       ? HomeScreenButton(
+                          key: const Key("save"),
                           onPressed: () {
                             context
                                 .read<HomeScreenCubit>()

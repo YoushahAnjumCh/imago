@@ -1,35 +1,47 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:either_dart/either.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:imago/core/failure/failure.dart';
+import 'package:imago/features/home_page/data/models/image_artifact_model.dart';
 import 'package:imago/features/home_page/domain/usecases/image_usecase.dart';
 import 'package:imago/features/home_page/presentation/cubit/home_page_cubit.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../../helpers/mock/constant/mock_constant.dart';
+import 'package:permission_handler_platform_interface/permission_handler_platform_interface.dart';
 
 class MockImageUseCase extends Mock implements ImageUseCase {}
 
 class MockFile extends Mock implements File {}
+
+class MockPermission extends Mock implements Permission {}
+
+class MockPermissionPlatform extends Mock
+    implements PermissionHandlerPlatform {}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late MockImageUseCase mockImageUseCase;
   late HomeScreenCubit homeScreenCubit;
   late MockFile mockFile;
+  late MockPermission mockPermission;
+  late MockPermissionPlatform mockPermissionPlatform;
   setUpAll(() {
     mockImageUseCase = MockImageUseCase();
     mockFile = MockFile();
+    mockPermission = MockPermission();
+    mockPermissionPlatform = MockPermissionPlatform();
     homeScreenCubit = HomeScreenCubit(mockImageUseCase);
   });
 
   group('HomeScreenCubit', () {
     const String tText = "hello";
-
+    final tImageArtifactModel = ImageArtifactModel(
+      finishReason: "finish",
+      base64: "iVBORw0KGgoAAAANSUhEUgAAAAUA",
+    );
     test("initial state should be User Initial", () {
       expect(homeScreenCubit.state, HomePageInitial());
     });
@@ -38,7 +50,7 @@ void main() {
       build: () {
         final homeScreenCubit = HomeScreenCubit(mockImageUseCase);
         when(() => mockImageUseCase.call(tText))
-            .thenAnswer((_) async => const Right(tImageModel));
+            .thenAnswer((_) async => Right(tImageArtifactModel));
         when(() => mockFile.writeAsBytes(any()))
             .thenAnswer((_) async => Future.value(mockFile));
 
@@ -123,45 +135,5 @@ void main() {
         HomePageInitial()
       ],
     );
-
-    // test('saveImageFileToGallery requests permission and saves image',
-    //     () async {
-    //   homeScreenCubit.imageFile = mockFile;
-    //   when(() => mockFile.readAsBytes()).thenAnswer((_) async => Uint8List(0));
-    //   when(() => Permission.storage.status)
-    //       .thenAnswer((_) async => PermissionStatus.granted);
-
-    //   await homeScreenCubit.saveImageFileToGallery();
-
-    //   verify(() => mockFile.readAsBytes()).called(1);
-    //   verify(() => ImageGallerySaver.saveImage(any())).called(1);
-    // });
-  });
-
-  group('saveImageFileToGallery', () {
-    setUpAll(() {
-      registerFallbackValue([Permission.storage]);
-      registerFallbackValue(Uint8List(0));
-    });
-    // test('requests permission if not granted initially and saves image',
-    //     () async {
-    //   // Arrange
-    //   when(() => mockPermission.status)
-    //       .thenAnswer((_) async => PermissionStatus.denied);
-    //   when(() => mockPermission.request())
-    //       .thenAnswer((_) async => PermissionStatus.granted);
-    //   when(() => mockFile.readAsBytes())
-    //       .thenAnswer((_) async => Uint8List.fromList([any()]));
-    //   when(() => ImageGallerySaver.saveImage(any()))
-    //       .thenAnswer((_) async => {});
-
-    //   // Act
-    //   await homeScreenCubit.saveImageFileToGallery();
-
-    //   // Assert
-    //   verify(() => mockPermission.request()).called(1);
-    //   verify(() => mockFile.readAsBytes()).called(1);
-    //   verify(() => ImageGallerySaver.saveImage(any())).called(1);
-    // });
   });
 }
