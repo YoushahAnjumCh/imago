@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:imago/common/firebase/analytics/firebase_analytics.dart';
 import 'package:imago/core/networkInfo/networkinfo.dart';
 import 'package:imago/features/home_page/data/datasources/image_data_source.dart';
 import 'package:imago/features/home_page/data/repositories/image_repository_impl.dart';
@@ -31,4 +32,9 @@ Future<void> init() async {
   sl.registerLazySingleton<NetworkInfo>(
       () => NetWorkInfoImpl(connectionChecker: sl()));
   sl.registerLazySingleton(() => InternetConnectionChecker());
+
+  final getIt = GetIt.instance;
+
+  getIt.registerLazySingleton<FirebaseAnalyticsService>(
+      () => FirebaseAnalyticsService());
 }

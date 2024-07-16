@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "274453927525",
+    "project_id": "imago-7f0a9",
+    "storage_bucket": "imago-7f0a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:274453927525:android:0b1fe4574c902c0139188c",
+        "android_client_info": {
+          "package_name": "com.example.imago"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1e1s76FeFcTVFrFtppxT8clCmH5MYz2Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

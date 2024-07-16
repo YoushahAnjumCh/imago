@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:imago/common/firebase/analytics/firebase_analytics.dart';
 import 'package:imago/core/constant/app_constant.dart';
 import 'package:imago/core/constant/color_constant.dart';
 import 'package:imago/env/env.dart';
@@ -11,6 +13,8 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final TextEditingController textEditingController = TextEditingController();
+  final FirebaseAnalyticsService _analyticsService =
+      GetIt.I<FirebaseAnalyticsService>();
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +122,11 @@ class HomePage extends StatelessWidget {
                               } else {
                                 context.read<HomeScreenCubit>().fetchImage(
                                     textEditingController.text.trim());
+                                await _analyticsService.logEvent(
+                                    "fetchImages", <String, Object>{
+                                  "page_name": "HomePage",
+                                  "textfield_name": textEditingController.text
+                                });
                               }
                             }
                           : null,
