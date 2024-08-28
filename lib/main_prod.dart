@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeScreenCubit(sl()),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: AppTheme.darkThemeMode,
         home: HomePage(),

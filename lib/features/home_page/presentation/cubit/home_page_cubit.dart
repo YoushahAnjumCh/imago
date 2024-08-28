@@ -34,7 +34,6 @@ class HomeScreenCubit extends Cubit<HomePageState> {
   Future<File> getBase64Image(String base64Image) async {
     final bytes = base64Decode(base64Image);
     Directory tempDir = await Directory.systemTemp.createTemp();
-
     final imagePath = '${tempDir.path}/temp_image.png';
 
     imageFile = File(imagePath);
@@ -65,6 +64,6 @@ class HomeScreenCubit extends Cubit<HomePageState> {
       final bytes = await imageFile.readAsBytes();
 
       await ImageGallerySaver.saveImage(Uint8List.fromList(bytes));
-    } else {}
+    }
   }
 }
