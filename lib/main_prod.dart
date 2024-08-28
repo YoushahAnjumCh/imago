@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:imago/core/service_locator/service_locator.dart';
 import 'package:imago/core/theme/app_theme.dart';
 import 'package:imago/env/env.dart';
@@ -13,7 +12,6 @@ Future<void> main() async {
   AppEnvironment.setupEnv(Environment.prod);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await dotenv.load(fileName: ".env");
   await init();
   runApp(const MyApp());
 }
@@ -27,7 +25,7 @@ class MyApp extends StatelessWidget {
       create: (context) => HomeScreenCubit(sl()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Imago',
         theme: AppTheme.darkThemeMode,
         home: HomePage(),
       ),

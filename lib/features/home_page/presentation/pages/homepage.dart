@@ -58,7 +58,7 @@ class HomePage extends StatelessWidget {
                   child: Center(
                     child: Text(
                       state.errorMessage.toString(),
-                      style: const TextStyle(color: Colors.red),
+                      style: TextStyle(color: AppColors.redAccentColor),
                     ),
                   ),
                 );
