@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -6,10 +7,12 @@ import 'package:imago/core/theme/app_theme.dart';
 import 'package:imago/env/env.dart';
 import 'package:imago/features/home_page/presentation/cubit/home_page_cubit.dart';
 import 'package:imago/features/home_page/presentation/pages/homepage.dart';
+import 'package:imago/firebase_options.dart';
 
 Future<void> main() async {
   AppEnvironment.setupEnv(Environment.dev);
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: ".env");
   await init();
   runApp(const MyApp());

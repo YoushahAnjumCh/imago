@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:imago/core/failure/failure.dart';
 import 'package:imago/features/home_page/data/datasources/image_data_source.dart';
 import 'package:imago/features/home_page/data/models/image_artifact_model.dart';
+import 'package:imago/features/service/firebase_remote_config.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,13 +13,18 @@ import '../../../../helpers/fixture/fixture_reader.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
 
+class MockRemoteConfig extends Mock implements RemoteConfigService {}
+
 void main() {
   late MockHttpClient mockHttpClient;
   late ImageRemoteDataSource imageRemoteDataSource;
+  late MockRemoteConfig remoteConfig;
 
   setUp(() async {
     mockHttpClient = MockHttpClient();
-    imageRemoteDataSource = ImageRemoteDataSource(client: mockHttpClient);
+    remoteConfig = MockRemoteConfig();
+    imageRemoteDataSource =
+        ImageRemoteDataSource(client: mockHttpClient, service: remoteConfig);
     await dotenv.load(fileName: ".env");
   });
 

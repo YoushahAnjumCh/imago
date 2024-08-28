@@ -20,9 +20,10 @@ class HomeScreenCubit extends Cubit<HomePageState> {
     emit(HomePageLoading());
     try {
       final result = await useCase.call(text);
-      result
-          .fold((left) => emit(HomePageFailure(errorMessage: left.toString())),
-              (right) async {
+      result.fold(
+          (left) =>
+              emit(HomePageFailure(errorMessage: left.errormessage.toString())),
+          (right) async {
         await getBase64Image(right.base64);
         emit(const HomePageLoaded());
       });

@@ -56,7 +56,10 @@ class HomePage extends StatelessWidget {
                     color: AppColors.grey300,
                   ),
                   child: Center(
-                    child: Text(state.errorMessage),
+                    child: Text(
+                      state.errorMessage.toString(),
+                      style: const TextStyle(color: Colors.red),
+                    ),
                   ),
                 );
               } else if (state is HomePageLoaded) {
