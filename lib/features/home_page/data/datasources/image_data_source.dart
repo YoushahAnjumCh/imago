@@ -1,13 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:imago/core/failure/failure.dart';
 import 'package:imago/features/home_page/data/models/image_artifact_model.dart';
-
-final apiKey = dotenv.env['APIKEY'];
-final engineId = dotenv.env["EngineID"];
-final baseURL = dotenv.env["BaseURL"];
+import 'package:imago/features/service/firebase_remote_config.dart';
 
 abstract class ImageDataSource {
   Future<ImageArtifactModel> getImage(String text);
@@ -15,12 +11,15 @@ abstract class ImageDataSource {
 
 class ImageRemoteDataSource implements ImageDataSource {
   final http.Client client;
-  ImageRemoteDataSource({
-    required this.client,
-  });
+  final RemoteConfigService service;
+  ImageRemoteDataSource({required this.client, required this.service});
 
   @override
   Future<ImageArtifactModel> getImage(String text) async {
+    await service.fetchAndActivate();
+    final baseURL = service.getBaseURL();
+    final engineId = service.getEngineID();
+    final apiKey = service.getApiKey();
     final url = "$baseURL$engineId/text-to-image";
     try {
       final response = await client.post(Uri.parse(url),
@@ -36,7 +35,7 @@ class ImageRemoteDataSource implements ImageDataSource {
             ],
           }),
           headers: {
-            "authorization": "$apiKey",
+            "authorization": apiKey,
             "Content-Type": "application/json"
           }).timeout(const Duration(seconds: 30));
       if (response.statusCode == 200) {
@@ -44,7 +43,7 @@ class ImageRemoteDataSource implements ImageDataSource {
         return ImageArtifactModel.fromJson(res['artifacts'][0]);
       } else {
         final res = json.decode(response.body);
-        final errorMessage = res['message'];
+        final errorMessage = res['name'];
         throw ServerFailure(errorMessage);
       }
     } on TimeoutException catch (e) {
