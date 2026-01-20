@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Imago',
-        theme: AppTheme.darkThemeMode,
+        theme: AppTheme.lightTheme,
         home: HomePage(),
       ),
     );

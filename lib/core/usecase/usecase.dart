@@ -1,6 +1,5 @@
-import 'package:either_dart/either.dart';
-import 'package:imago/core/failure/failure.dart';
+import 'package:imago/core/typedef/typedef.dart';
 
 abstract class UseCase<Type, Params> {
-  Future<Either<Failure, Type>> call(Params params);
+  FutureResult<Type> call(Params params);
 }
